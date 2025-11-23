@@ -1,4 +1,4 @@
-# Feis Spring Archetype
+# Archetype
 
 Simple yet useful Spring Boot Maven archetype
 
@@ -9,6 +9,8 @@ Simple yet useful Spring Boot Maven archetype
 - [2.0 Technologies](#20-technologies)
 - [3.0 Features](#30-features)
 - [4.0 How to use it](#40-how-to-use-it)
+  - [4.1 Update settings.xml](#41-update-settingsxml)
+  - [4.2 Create your project](#42-create-your-project)
 
 ## 1.0 Brief Description
 
@@ -65,21 +67,70 @@ featured in the project are:
 ## 4.0 How to use it
 
 Building your new project is as easy as drinking a cup of coffee!
-All you have to do is to copy-paste these simple commands in the shell of
-your preference, and you'll be good to go!
 
-```zsh
-git clone https://github.com/mfacecchia/feis-spring-archetype && \
-cd feis-spring-archetype && \
-mvn clean install && \
-cd .. && \
-mvn archetype:generate \
- -DarchetypeGroupId=com.feis \
- -DarchetypeArtifactId=archetype \
- -DarchetypeVersion=1.0.0
+### 4.1 Update settings.xml
+
+First, you will need to configure your Maven installation to actually
+find the GitHub Package repository. To achieve this, head over to
+your `settings.xml` configuration, or create it if it doesn't exist (this
+is usually located under `~/.m2/settings.xml` on Linux/MacOS
+and under `C:\Users\{yourName}\.m2\settings.xml` on Windows), and
+add the following properties
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <localRepository>${user.home}/.m2/repository</localRepository>
+
+  <profiles>
+    <profile>
+      <id>github</id>
+      <repositories>
+        <repository>
+          <id>archetype</id>
+          <name>Feis Maven Spring Archetype</name>
+          <url>https://maven.pkg.github.com/mfacecchia/archetype</url>
+          <releases>
+            <enabled>true</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </releases>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <servers>
+    <server>
+      <id>github</id>
+      <!-- Write here your GitHub username -->
+      <username>yourGHUsername</username>
+      <!--  Your Personal Access Token goes here -->
+      <password>authToken</password>
+    </server>
+  </servers>
+
+</settings>
 ```
 
-This is currently the only way to build a project using this archetype, I will soon publish it to a registry to simplify the whole process.
+**NOTE:** You  will need to get a Personal Access Token
+with the `read:packages` scope from GitHub to be able to retrieve
+the package, otherwise, GitHub will return a `401 Unauthorized`
+while fetching the package.
+You can generate a Personal Access Token at [this link](https://github.com/settings/tokens/new)
+and paste it in the `<password></password>` property.
+
+### 4.2 Create your project
+
+Now, you will only need to generate your project by
+running the following script and you'll be good to go!
+
+```bash
+mvn archetype:generate \
+  -DarchetypeGroupId=com.feis \
+  -DarchetypeArtifactId=archetype \
+  -DarchetypeVersion=1.0.0 \
+  -Pgithub
+```
 
 **NOTE:** You may be prompted to input some information about your
 new project, such as the GroupId and the ArtifactId.
