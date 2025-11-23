@@ -128,7 +128,7 @@ running the following script and you'll be good to go!
 mvn archetype:generate \
   -DarchetypeGroupId=com.feis \
   -DarchetypeArtifactId=archetype \
-  -DarchetypeVersion=1.0.0 \
+  -DarchetypeVersion=1.0.1 \
   -Pgithub
 ```
 
