@@ -33,6 +33,8 @@
             <includes>
                 <include>README.md</include>
                 <include>__gitignore__</include>
+                <include>__envSample__</include>
+                <include>__env__</include>
             </includes>
         </fileSet>
     </fileSets>
@@ -42,6 +44,12 @@
         </requiredProperty>
         <requiredProperty key="gitignore">
             <defaultValue>.gitignore</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="envSample">
+            <defaultValue>.env.sample</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="env">
+            <defaultValue>.env</defaultValue>
         </requiredProperty>
         <requiredProperty key="appFullName"></requiredProperty>
     </requiredProperties>
