@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 public class JwtRolesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
+        // TODO: Implement roles obtaining
         throw new NotImplementedException("Implement this");
     }
 }
