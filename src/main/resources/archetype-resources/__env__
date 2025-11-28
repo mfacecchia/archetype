@@ -1,0 +1,17 @@
+# TODO: Compile with your local development values
+
+# --- DATABASE ---
+DB_PROVIDER=
+DB_HOST=
+DB_PORT=
+DB_NAME=
+DB_USER=
+DB_PASS=
+DB_DRIVER=
+DB_PLATFORM=
+DB_DIALECT=
+
+# --- OAUTH ---
+# NOTE: Remove if not using an external IDP
+IDP_ISS_URI=
+
