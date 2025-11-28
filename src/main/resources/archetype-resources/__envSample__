@@ -1,5 +1,9 @@
 # This file represents all the properties to be configured
-# to start the application.
+# to start the application and is intended as a shareable template
+# to quickly setup the actual .env with real values.
+#
+# To make spring read the actual file content and inject the variables,
+# make a copy of this and rename it to `.env`
 #
 # |-------------------------------------------------------------|
 # | ** DO NOT COMMIT THIS FILE WITH ACTUAL PRODUCTION VALUES ** |
