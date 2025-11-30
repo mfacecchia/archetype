@@ -11,6 +11,7 @@ Simple yet useful Spring Boot Maven archetype
 - [4.0 How to use it](#40-how-to-use-it)
   - [4.1 Update settings.xml](#41-update-settingsxml)
   - [4.2 Create your project](#42-create-your-project)
+- [5.0 Releases](#50-releases)
 
 ## 1.0 Brief Description
 
@@ -134,3 +135,12 @@ mvn archetype:generate \
 
 **NOTE:** You may be prompted to input some information about your
 new project, such as the GroupId and the ArtifactId.
+
+## 5.0 Releases
+
+Below a list of all released archetype versions:
+
+- 1.0
+  - 1.0.1
+  - 1.0.2
+  - 1.0.3
