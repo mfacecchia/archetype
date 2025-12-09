@@ -1,6 +1,7 @@
 package ${package}.${artifactId}.features.user.mapper;
 
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 import ${package}.${artifactId}.common.mapper.BaseMapper;
 import ${package}.${artifactId}.features.user.data.User;
@@ -9,6 +10,7 @@ import ${package}.${artifactId}.features.user.data.dto.request.UserUpdateDto;
 import ${package}.${artifactId}.features.user.data.dto.response.UserDto;
 import ${package}.${artifactId}.features.user.data.dto.response.UserPageDto;
 
+@Component
 public class UserMapper implements BaseMapper<User, UserDto, UserCreateDto, UserUpdateDto, UserPageDto> {
 
     @Override
