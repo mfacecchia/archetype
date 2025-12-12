@@ -1,5 +1,7 @@
 package ${package}.${artifactId}.common.data.entity;
 
+import org.hibernate.envers.Audited;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +13,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
+@Audited
 public class BaseEntity extends BaseAuditingEntity {
 
     @Id
