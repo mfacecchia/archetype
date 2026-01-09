@@ -1,11 +1,12 @@
 package ${package}.${artifactId}.security;
 
+import ${package}.${artifactId}.security.data.dto.response.JwtDto;
+import ${package}.${artifactId}.common.exception.AuthenticationException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-
-import ${package}.${artifactId}.common.exception.AuthenticationException;
 
 public class SecurityUtils {
 
@@ -23,5 +24,10 @@ public class SecurityUtils {
     public static String getCurrentJwtValue() {
         Jwt jwt = getCurrentJwt();
         return jwt.getTokenValue();
+    }
+
+    public static JwtDto getJwtDto() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (JwtDto) authentication.getPrincipal();
     }
 }
