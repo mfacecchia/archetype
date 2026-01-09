@@ -28,7 +28,7 @@ public class BaseAuditingEntity {
     private Instant modifiedDate;
 
     @Column(name = "modified_by")
-    protected Integer modifiedBy;
+    protected String modifiedBy;
 
     @Column(name = "deleted")
     protected Boolean deleted;
