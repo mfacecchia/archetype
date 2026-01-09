@@ -15,6 +15,7 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
         // TODO: Add your allowed hosts here
         corsConfiguration.setAllowedOrigins(List.of());
 
