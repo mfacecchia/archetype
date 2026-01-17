@@ -8,8 +8,8 @@
     <version>1.0.4</version>
     <name>Feis Archetype</name>
     <description>
-        Base plug and play archetype\
-        **IMPORTANT**: to install and build your project using this package, please, refer to [this guide](https://github.com/mfacecchia/archetype?tab=readme-ov-file#40-how-to-use-it)
+Base plug and play archetype\
+**IMPORTANT**: to install and build your project using this package, please, refer to [this guide](https://github.com/mfacecchia/archetype?tab=readme-ov-file#40-how-to-use-it)
     </description>
 
 	<developers>
