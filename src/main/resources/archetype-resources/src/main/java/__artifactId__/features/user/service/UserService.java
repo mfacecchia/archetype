@@ -2,6 +2,7 @@ package ${package}.${artifactId}.features.user.service;
 
 import org.springframework.stereotype.Service;
 
+import ${package}.${artifactId}.common.exception.AlreadyRegisteredException;
 import ${package}.${artifactId}.common.exception.ConflictException;
 import ${package}.${artifactId}.common.service.AbstractService;
 import ${package}.${artifactId}.features.user.data.User;

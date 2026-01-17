@@ -1,5 +1,16 @@
 package ${package}.${artifactId}.common.service;
 
+import ${package}.${artifactId}.common.data.dto.response.BasePageDto;
+import ${package}.${artifactId}.common.data.entity.BaseAuditingEntity;
+import ${package}.${artifactId}.common.exception.ResourceNotFoundException;
+import ${package}.${artifactId}.common.exception.ValidationException;
+import ${package}.${artifactId}.common.exception.errors.Error;
+import ${package}.${artifactId}.common.exception.errors.ValidationError;
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+import ${package}.${artifactId}.common.mapper.BaseMapper;
+import ${package}.${artifactId}.common.repository.BaseRepository;
+import ${package}.${artifactId}.common.specification.CommonSpecificationBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,17 +25,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
-
-import ${package}.${artifactId}.common.data.dto.BasePageDto;
-import ${package}.${artifactId}.common.data.entity.BaseAuditingEntity;
-import ${package}.${artifactId}.common.exception.ResourceNotFoundException;
-import ${package}.${artifactId}.common.exception.ValidationException;
-import ${package}.${artifactId}.common.exception.model.Error;
-import ${package}.${artifactId}.common.exception.model.InternalErrorCode;
-import ${package}.${artifactId}.common.exception.model.ValidationError;
-import ${package}.${artifactId}.common.mapper.BaseMapper;
-import ${package}.${artifactId}.common.repository.BaseRepository;
-import ${package}.${artifactId}.common.specification.CommonSpecificationBuilder;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;

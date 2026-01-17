@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.common.data.dto;
+package ${package}.${artifactId}.common.data.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;

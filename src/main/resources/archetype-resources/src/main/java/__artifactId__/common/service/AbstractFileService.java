@@ -1,18 +1,18 @@
 package ${package}.${artifactId}.common.service;
 
+import ${package}.${artifactId}.common.data.dto.response.BasePageDto;
+import ${package}.${artifactId}.common.data.entity.BaseFileEntity;
+import ${package}.${artifactId}.common.exception.ResourceNotFoundException;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import ${package}.${artifactId}.common.data.dto.BasePageDto;
-import ${package}.${artifactId}.common.data.entity.BaseEntityWithImage;
-import ${package}.${artifactId}.common.exception.ResourceNotFoundException;
-
 import lombok.SneakyThrows;
 
-public abstract class AbstractFileService<ENTITY extends BaseEntityWithImage, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO extends BasePageDto<GET_DTO>, PK_TYPE>
+public abstract class AbstractFileService<ENTITY extends BaseFileEntity, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO extends BasePageDto<GET_DTO>, PK_TYPE>
     extends AbstractService<ENTITY, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO, PK_TYPE> {
 
         abstract String upload(MultipartFile file);

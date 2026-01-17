@@ -1,6 +1,6 @@
 package ${package}.${artifactId}.features.user.data.dto.request;
 
-import ${package}.${artifactId}.common.data.dto.BaseUpdateDto;
+import ${package}.${artifactId}.common.data.dto.request.BaseUpdateDto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

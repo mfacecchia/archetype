@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.common.data.dto;
+package ${package}.${artifactId}.common.data.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
