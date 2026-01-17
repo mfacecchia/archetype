@@ -1,5 +1,7 @@
 package ${package}.${artifactId}.common.exception.data.dto.response;
 
+import ${package}.${artifactId}.common.exception.errors.Error;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;

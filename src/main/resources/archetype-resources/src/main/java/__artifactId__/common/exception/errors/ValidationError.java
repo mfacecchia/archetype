@@ -1,5 +1,7 @@
 package ${package}.${artifactId}.common.exception.errors;
 
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+
 import org.springframework.lang.Nullable;
 
 import lombok.Getter;
