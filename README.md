@@ -144,3 +144,4 @@ Below a list of all released archetype versions:
   - 1.0.1
   - 1.0.2
   - 1.0.3
+  - 1.0.4
