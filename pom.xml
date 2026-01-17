@@ -3,11 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.feis</groupId>
-	<artifactId>archetype</artifactId>
-	<version>1.0.3</version>
-	<name>Feis Archetype</name>
-	<description>Base plug and play archetype</description>
+    <groupId>com.feis</groupId>
+    <artifactId>archetype</artifactId>
+    <version>1.0.4</version>
+    <name>Feis Archetype</name>
+    <description>
+        Base plug and play archetype\
+        **IMPORTANT**: to install and build your project using this package, please, refer to [this guide](https://github.com/mfacecchia/archetype?tab=readme-ov-file#40-how-to-use-it)
+    </description>
 
 	<developers>
 		<developer>
