@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.common.exception.model;
+package ${package}.${artifactId}.common.exception.data.dto.response;
 
 import java.time.Instant;
 import java.util.ArrayList;

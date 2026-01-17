@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.common.exception.model;
+package ${package}.${artifactId}.common.exception.errors;
 
 import org.springframework.lang.Nullable;
 

@@ -1,10 +1,10 @@
 package ${package}.${artifactId}.common.exception;
 
+import ${package}.${artifactId}.common.exception.errors.Error;
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import ${package}.${artifactId}.common.exception.model.Error;
-import ${package}.${artifactId}.common.exception.model.InternalErrorCode;
 
 import lombok.Getter;
 import lombok.Setter;

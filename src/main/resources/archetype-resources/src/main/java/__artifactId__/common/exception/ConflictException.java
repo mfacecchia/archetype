@@ -1,12 +1,12 @@
 package ${package}.${artifactId}.common.exception;
 
+import ${package}.${artifactId}.common.exception.errors.Error;
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import ${package}.${artifactId}.common.exception.model.Error;
-import ${package}.${artifactId}.common.exception.model.InternalErrorCode;
 
 @ResponseStatus(code = HttpStatus.CONFLICT, value = HttpStatus.CONFLICT)
 public class ConflictException extends BaseException {

@@ -1,5 +1,12 @@
 package ${package}.${artifactId}.common.exception.handler;
 
+import ${package}.${artifactId}.common.exception.BaseException;
+import ${package}.${artifactId}.common.exception.ValidationException;
+import ${package}.${artifactId}.common.exception.errors.Error;
+import ${package}.${artifactId}.common.exception.data.dto.response.ErrorResponse;
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+import ${package}.${artifactId}.common.exception.errors.ValidationError;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +24,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-
-import ${package}.${artifactId}.common.exception.BaseException;
-import ${package}.${artifactId}.common.exception.ValidationException;
-import ${package}.${artifactId}.common.exception.model.Error;
-import ${package}.${artifactId}.common.exception.model.ErrorResponse;
-import ${package}.${artifactId}.common.exception.model.InternalErrorCode;
-import ${package}.${artifactId}.common.exception.model.ValidationError;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {

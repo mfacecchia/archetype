@@ -1,9 +1,9 @@
 package ${package}.${artifactId}.common.exception;
 
+import ${package}.${artifactId}.common.exception.errors.Error;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import ${package}.${artifactId}.common.exception.model.Error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

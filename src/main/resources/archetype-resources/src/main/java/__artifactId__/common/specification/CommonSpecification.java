@@ -1,15 +1,15 @@
 package ${package}.${artifactId}.common.specification;
 
+import ${package}.${artifactId}.common.exception.BaseException;
+import ${package}.${artifactId}.common.exception.errors.Error;
+import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
-
-import ${package}.${artifactId}.common.exception.BaseException;
-import ${package}.${artifactId}.common.exception.model.Error;
-import ${package}.${artifactId}.common.exception.model.InternalErrorCode;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
