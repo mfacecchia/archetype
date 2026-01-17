@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.security;
+package ${package}.${artifactId}.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,29 +8,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
+    private JwtConverter jwtConverter;
+
+    @Autowired
     private UrlBasedCorsConfigurationSource corsConfig;
 
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(JwtRolesConverter jwtRolesConverter) {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwtRolesConverter);
-        return converter;
-    }
-
-    @Bean
-    public JwtRolesConverter jwtRolesConverter() {
-        return new JwtRolesConverter();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(customizer -> customizer.configurationSource(corsConfig))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -45,7 +36,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter))
                 );
 
         return http.build();

@@ -1,4 +1,4 @@
-package ${package}.${artifactId}.security;
+package ${package}.${artifactId}.security.utils;
 
 import ${package}.${artifactId}.security.data.dto.response.JwtDto;
 import ${package}.${artifactId}.common.exception.AuthenticationException;
