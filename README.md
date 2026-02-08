@@ -2,6 +2,8 @@
 
 Simple yet useful Spring Boot Maven archetype
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/mfacecchia/archetype)
+
 ## Table of Contents
 
 - [1.0 Brief Description](#10-brief-description)
