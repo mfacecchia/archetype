@@ -12,13 +12,15 @@ import ${package}.${artifactId}.features.user.data.dto.response.UserPageDto;
 import ${package}.${artifactId}.features.user.mapper.UserMapper;
 import ${package}.${artifactId}.features.user.repository.UserRepository;
 
+import jakarta.validation.Validator;
+
 @Service
 public class UserService extends AbstractService<User, UserDto, UserCreateDto, UserUpdateDto, UserPageDto, Integer> {
+    private final UserRepository repository;
 
-    public UserService(UserMapper userMapper, UserRepository userRepository) {
-        this.mapper = userMapper;
+    public UserService(UserMapper userMapper, UserRepository userRepository, Validator validator) {
+        super(userMapper, userRepository, validator, "User");
         this.repository = userRepository;
-        this.resourceName = "User";
     }
 
     @Override
@@ -36,11 +38,11 @@ public class UserService extends AbstractService<User, UserDto, UserCreateDto, U
 
     @Override
     protected void validateCreateDto(UserCreateDto createDto) {
-        if (((UserRepository) repository).existsByEmail(createDto.getEmail())) {
+        if (repository.existsByEmail(createDto.getEmail())) {
             throw new AlreadyRegisteredException("Email already exists");
         }
 
-        if (((UserRepository) repository).existsByExternalId(createDto.getExternalId())) {
+        if (repository.existsByExternalId(createDto.getExternalId())) {
             throw new AlreadyRegisteredException("ExternalId already exists");
         }
     }
