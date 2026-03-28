@@ -14,3 +14,4 @@ public class AuthenticationException extends BaseException {
     public AuthenticationException() {
     }
 }
+

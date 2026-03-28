@@ -44,3 +44,4 @@ public class HasRoleAspect {
         throw new NotImplementedException("Implement this logic.");
     }
 }
+

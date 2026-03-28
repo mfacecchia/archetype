@@ -22,3 +22,4 @@ public class ValidationError extends Error {
         this.fieldName = fieldName;
     }
 }
+

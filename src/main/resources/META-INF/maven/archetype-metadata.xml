@@ -18,14 +18,8 @@
         </fileSet>
         <fileSet filtered="true">
             <directory>src/main/resources</directory>
-            <excludes>
-                <exclude>application.properties</exclude>
-            </excludes>
-        </fileSet>
-        <fileSet>
-            <directory>src/main/resources</directory>
             <includes>
-                <include>application.properties</include>
+                <include>**/*</include>
             </includes>
         </fileSet>
         <fileSet filtered="true">
@@ -35,6 +29,7 @@
                 <include>__gitignore__</include>
                 <include>__envSample__</include>
                 <include>__env__</include>
+                <include>.editorconfig</include>
             </includes>
         </fileSet>
     </fileSets>
