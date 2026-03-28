@@ -27,6 +27,7 @@ public class CommonSpecificationBuilder<ENTITY> {
     }
     public Specification<ENTITY> build() {
 
+    public Specification<ENTITY> build() {
         if (specificationList.isEmpty()) {
             return null;
         }
@@ -37,7 +38,14 @@ public class CommonSpecificationBuilder<ENTITY> {
             if (spec.getCriteria().getValue() == null) {
                 continue;
             }
-            result = spec.getCriteria().isOrPredicate() ? result.or(spec) : result.and(spec);
+
+            if (result == null) { result = spec;
+                continue;
+            }
+
+            result = spec.getCriteria().isOrPredicate() ?
+                    result.or(spec)
+                    : result.and(spec);
         }
 
         return result;
