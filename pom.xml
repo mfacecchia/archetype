@@ -12,6 +12,10 @@ Base plug and play archetype\
 **IMPORTANT**: to install and build your project using this package, please, refer to [this guide](https://github.com/mfacecchia/archetype?tab=readme-ov-file#40-how-to-use-it)
   </description>
 
+  <properties>
+    <java.version>21</java.version>
+  </properties>
+
   <developers>
     <developer>
       <name>Marco Facecchia</name>
