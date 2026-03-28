@@ -1,18 +1,19 @@
 package ${package}.${artifactId}.common.specification;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 public class CommonSpecificationBuilder<ENTITY> {
-    private List<CommonSpecification<ENTITY>> specificationList = new ArrayList<>();
+    public List<CommonSpecification<ENTITY>> specificationList = new ArrayList<>();
 
     public CommonSpecificationBuilder<ENTITY> with(CommonSpecification<ENTITY> specification) {
         specificationList.add(specification);
@@ -25,7 +26,6 @@ public class CommonSpecificationBuilder<ENTITY> {
 
         return this;
     }
-    public Specification<ENTITY> build() {
 
     public Specification<ENTITY> build() {
         if (specificationList.isEmpty()) {
@@ -39,7 +39,8 @@ public class CommonSpecificationBuilder<ENTITY> {
                 continue;
             }
 
-            if (result == null) { result = spec;
+            if (result == null) {
+                result = spec;
                 continue;
             }
 
@@ -51,35 +52,16 @@ public class CommonSpecificationBuilder<ENTITY> {
         return result;
     }
 
-
-    /**
-     * @param specification
-     * @return CommonSpecificationBuilder
-     * @description add specification by passing CommonSpecification object
-     */
     public CommonSpecificationBuilder<ENTITY> where(CommonSpecification<ENTITY> specification) {
         specificationList.add(specification);
         return this;
     }
 
-    /**
-     * @param criteria
-     * @return CommonSpecificationBuilder
-     * @description add specification by passing SearchCriteria object
-     */
     public CommonSpecificationBuilder<ENTITY> where(SearchCriteria criteria) {
         specificationList.add(new CommonSpecification<>(criteria));
         return this;
     }
 
-    /**
-     * @param key
-     * @param searchCriteriaType
-     * @param value
-     * @param isOrPredicate
-     * @return CommonSpecificationBuilder
-     * @description add specification by passing key, SearchCriteriaType, value and isOrPredicate
-     */
     public CommonSpecificationBuilder<ENTITY> where(String key, SearchCriteriaType searchCriteriaType, Object value, boolean isOrPredicate) {
         specificationList.add(new CommonSpecification<>(new SearchCriteria(key, searchCriteriaType, value, isOrPredicate)));
         return this;
@@ -130,11 +112,12 @@ public class CommonSpecificationBuilder<ENTITY> {
         return where(key, SearchCriteriaType.NOT_IN, values, isOrPredicate);
     }
 
-    public CommonSpecificationBuilder<ENTITY> beforeDate(String key, LocalDateTime value) {
+    public CommonSpecificationBuilder<ENTITY> beforeDate(String key, LocalDate value) {
         return where(key, SearchCriteriaType.DATE_TO, value, false);
     }
 
-    public CommonSpecificationBuilder<ENTITY> afterDate(String key, LocalDateTime value) {
+    public CommonSpecificationBuilder<ENTITY> afterDate(String key, LocalDate value) {
         return where(key, SearchCriteriaType.DATE_FROM, value, false);
     }
 }
+
