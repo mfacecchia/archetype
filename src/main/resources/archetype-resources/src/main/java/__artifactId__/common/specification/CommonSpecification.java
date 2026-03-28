@@ -7,12 +7,15 @@ import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
