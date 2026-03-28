@@ -17,8 +17,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,16 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 
-
+@Log4j2
+@RequiredArgsConstructor
 public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO extends BasePageDto<GET_DTO>, PK_TYPE> {
-    @Autowired
-    protected Validator validator;
-
-    protected static Logger logger;
-
-    protected BaseMapper<ENTITY, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO> mapper;
-    protected BaseRepository<ENTITY, PK_TYPE> repository;
-    protected String resourceName = "Resource";
+    private final BaseMapper<ENTITY, GET_DTO, CREATE_DTO, UPDATE_DTO, PAGEABLE_DTO> mapper;
+    private final BaseRepository<ENTITY, PK_TYPE> repository;
+    protected final Validator validator;
+    protected final String resourceName;
 
     protected abstract void validateCreateDto(CREATE_DTO createDto);
 
@@ -49,9 +47,10 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     protected abstract PK_TYPE getResourceId(ENTITY entity);
 
     public GET_DTO get(PK_TYPE id) {
-        ENTITY entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(resourceName, id.toString()));
+        ENTITY entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(resourceName, id.toString()));
 
-        logger.info("GetById ::: {} found with id {}", resourceName, id);
+        log.info("GetById ::: {} found with id {}", resourceName, id);
 
         return convertToDto(entity);
     }
@@ -69,7 +68,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
                 pageableDto.setTotalCount(totalCount);
             }
 
-            logger.info("GetAll ::: Found {} total results. Displaying first {} items", entityPage.getTotalElements(), entityPage.getNumberOfElements());
+            log.info("GetAll ::: Found {} total results. Displaying first {} items", entityPage.getTotalElements(), entityPage.getNumberOfElements());
 
             return pageableDto;
         }
@@ -86,7 +85,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
             itemsPage = new PageImpl<>(itemsList, pageable, itemsList.size());
         }
 
-        logger.info("GetAll ::: Found {} total results.", itemsList.size());
+        log.info("GetAll ::: Found {} total results.", itemsList.size());
 
         return convertToPageDto(itemsPage);
     }
@@ -99,11 +98,12 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         doCreate(entity);
         ENTITY saved = save(entity);
 
-        logger.info("Create ::: Created new {} with id", resourceName, getResourceId(saved));
+        log.info("Create ::: Created new {} with id", resourceName, getResourceId(saved));
 
         return convertToDto(saved);
     }
 
+    // TODO: rollbackFor = Exception.class
     @Transactional
     public GET_DTO update(PK_TYPE id, UPDATE_DTO updateDto) {
         ENTITY existing = repository.findById(id).orElseThrow(
@@ -116,7 +116,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         doUpdate(existing, updateDto);
         ENTITY saved = save(existing);
 
-        logger.info("Update ::: Updated {} with id ", resourceName, id);
+        log.info("Update ::: Updated {} with id ", resourceName, id);
 
         return convertToDto(saved);
     }
@@ -132,6 +132,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     protected void softDelete(PK_TYPE id) {
         Optional<ENTITY> existing = repository.findById(id);
         if (existing.isEmpty()) {
+            log.info("Delete ::: {} with id {} was not found. Early returning.", resourceName, id);
             return;
         }
 
@@ -141,15 +142,19 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         toDelete.setDeleted(true);
         save(toDelete);
 
-        logger.info("Delete ::: Execute soft delete on {} with id {}", resourceName, id);
+        log.info("Delete ::: Execute soft delete on {} with id {}", resourceName, id);
     }
 
     protected void hardDelete(PK_TYPE id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        Optional<ENTITY> entity = repository.findById(id);
+
+        if (!entity.isPresent()) {
+            log.info("Delete ::: {} with id {} was not found. Early returning.", resourceName, id);
+            return;
         }
 
-        logger.info("Delete ::: Execute hard delete on {} with id {}", resourceName, id);
+        repository.delete(entity.get());
+        log.info("Delete ::: Execute hard delete on {} with id {}", resourceName, id);
     }
 
     protected ENTITY save(ENTITY entity) {
