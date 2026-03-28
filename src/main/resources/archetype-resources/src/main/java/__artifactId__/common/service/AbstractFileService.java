@@ -51,7 +51,7 @@ public abstract class AbstractFileService<ENTITY extends BaseFileEntity, GET_DTO
         return fileStream;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public GET_DTO create(CREATE_DTO createDto, MultipartFile file) {
         doValidate(createDto);
         validateCreateDto(createDto);

@@ -90,7 +90,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         return convertToPageDto(itemsPage);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public GET_DTO create(CREATE_DTO createDto) {
         doValidate(createDto);
         validateCreateDto(createDto);
@@ -103,8 +103,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         return convertToDto(saved);
     }
 
-    // TODO: rollbackFor = Exception.class
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public GET_DTO update(PK_TYPE id, UPDATE_DTO updateDto) {
         ENTITY existing = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(resourceName, id.toString()));
@@ -121,7 +120,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         return convertToDto(saved);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delete(PK_TYPE id) {
         validateDelete(id);
         // Soft delete implemented by default. If you want to hard delete, override this
