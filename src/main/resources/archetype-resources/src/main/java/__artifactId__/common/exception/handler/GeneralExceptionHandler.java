@@ -106,17 +106,19 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<ErrorResponse> generalExceptionHandler(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> generalExceptionHandler(Exception e, WebRequest request) {
         BaseException baseException = new BaseException();
 
         Error error = new Error(InternalErrorCode.UNHANDLED_ERROR, "Unexpected error while processing your request");
-        if (ex != null) {
-            error.setDevMessage(ex.getMessage());
-            baseException.setStackTrace(ex.getStackTrace());
+        if (e != null) {
+            error.setDevMessage(e.getMessage());
+            baseException.setStackTrace(e.getStackTrace());
         }
         baseException.addError(error);
 
-        HttpStatus status = getExceptionStatusCode(ex);
+        HttpStatus status = e == null ?
+                HttpStatus.INTERNAL_SERVER_ERROR
+                : getExceptionStatusCode(e);
 
         ErrorResponse errorResponse = buildErrorResponse(baseException, status, request);
 
