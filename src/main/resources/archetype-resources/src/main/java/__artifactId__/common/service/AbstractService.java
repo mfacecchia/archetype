@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,38 +55,46 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     }
 
     public PAGEABLE_DTO getAll(CommonSpecificationBuilder<ENTITY> specificationBuilder, Pageable pageable, boolean showTotalCount) {
+        specificationBuilder.whereEqualTo("deleted", false, false);
+
         Specification<ENTITY> specification = specificationBuilder.build();
 
+        List<ENTITY> entities;
         if (pageable != null) {
-            Page<GET_DTO> entityPage = repository.findAll(specification, pageable).map(mapper::mapToDto);
-
-            PAGEABLE_DTO pageableDto = convertToPageDto(entityPage);
-
-            if (showTotalCount) {
-                long totalCount = entityPage.getTotalElements();
-                pageableDto.setTotalCount(totalCount);
-            }
-
-            log.info("GetAll ::: Found {} total results. Displaying first {} items", entityPage.getTotalElements(), entityPage.getNumberOfElements());
-
-            return pageableDto;
-        }
-
-        List<GET_DTO> itemsList = repository.findAll(specification).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-
-        Page<GET_DTO> itemsPage;
-        if (itemsList.isEmpty()) {
-            itemsPage = Page.empty();
+            entities = repository.findAll(specification, pageable.getSort());
         } else {
-            pageable = PageRequest.of(0, itemsList.size());
-            itemsPage = new PageImpl<>(itemsList, pageable, itemsList.size());
+            entities = repository.findAll(specification);
         }
 
-        log.info("GetAll ::: Found {} total results.", itemsList.size());
+        entities = doFilter(entities);
 
-        return convertToPageDto(itemsPage);
+        if (entities.isEmpty()) {
+            log.info("GetAll ::: No entries were found with the given parameters. Returning an empty page.");
+            return convertToPageDto(Page.empty());
+        }
+
+        if (pageable == null) {
+            pageable = PageRequest.of(0, entities.size());
+        }
+
+        List<GET_DTO> entitiesSplit = getEntitiesPage(entities, pageable).stream()
+                .map(this::convertToDto)
+                .toList();
+
+        Page<GET_DTO> page = new PageImpl<>(entitiesSplit, pageable, entities.size());
+
+        PAGEABLE_DTO dto = convertToPageDto(page);
+
+        if (showTotalCount) {
+            dto.setTotalCount(page.getTotalElements());
+        } else {
+            dto.setTotalCount(null);
+        }
+
+        int pageNumber = page.getPageable().getPageNumber();
+        log.info("GetAll ::: Found {} total results. Displaying first {} items on page {}", entities.size(), page.getNumberOfElements(), pageNumber);
+
+        return dto;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -162,15 +169,15 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
 
     protected void doValidate(Object dto) {
         Set<ConstraintViolation<Object>> validationErrors = validator.validate(dto);
-        List<Error> appValidationerrors = new ArrayList<>();
+        List<Error> appValidationErrors = new ArrayList<>();
 
         for (ConstraintViolation<?> validationError : validationErrors) {
             String fieldName = validationError.getPropertyPath().iterator().next().getName();
-            appValidationerrors.add(
+            appValidationErrors.add(
                     new ValidationError(fieldName, InternalErrorCode.PARAMETER_INVALID, validationError.getMessage()));
         }
-        if (appValidationerrors.size() >= 1) {
-            throw new ValidationException(appValidationerrors);
+        if (appValidationErrors.size() >= 1) {
+            throw new ValidationException(appValidationErrors);
         }
     }
 
@@ -181,6 +188,12 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     }
 
     protected void doDelete(ENTITY entity) {
+    }
+
+    // Override this if you expect filtering based on
+    // user roles or so
+    protected List<ENTITY> doFilter(List<ENTITY> entities) {
+        return entities;
     }
 
     public GET_DTO convertToDto(ENTITY entity) {
@@ -199,7 +212,6 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
         return mapper.mapCreateDtoToEntity(createDto);
     }
 
-
     public ENTITY convertUpdateDtoToEntity(UPDATE_DTO updateDto, ENTITY toUpdate) {
         mapper.mapUpdateDtoToEntity(updateDto, toUpdate);
         return toUpdate;
@@ -207,5 +219,26 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
 
     public UPDATE_DTO convertToUpdateDto(ENTITY entity) {
         return mapper.mapToUpdateDto(entity);
+    }
+
+    /**
+     * Splits the provided list to the required
+     * page, returning a portion of the same list.
+     */
+    private List<ENTITY> getEntitiesPage(List<ENTITY> entities, Pageable pageable) {
+        if (pageable == null) {
+            return entities;
+        }
+
+        if (entities.size() <= pageable.getOffset()) {
+            return new ArrayList<>();
+        }
+
+        int start = (int) pageable.getOffset();
+
+        int endIndex = start + pageable.getPageSize();
+        int end = Math.min(endIndex, entities.size());
+
+        return entities.subList(start, end);
     }
 }
