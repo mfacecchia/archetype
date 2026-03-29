@@ -8,13 +8,16 @@ import ${package}.${artifactId}.common.exception.enums.InternalErrorCode;
 import ${package}.${artifactId}.common.exception.errors.ValidationError;
 
 import java.time.Instant;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.StringFormattedMessage;
+
 import org.hibernate.exception.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,19 +38,26 @@ public class GeneralExceptionHandler {
      * Exception thrown when the `@Valid` constraints validation is not satisfied
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> methodArgumentNotValidHandler(MethodArgumentNotValidException ex, WebRequest request) {
-        List<Error> validationErrors = ex.getFieldErrors().stream()
-                .map(
-                        (fieldError) -> new ValidationError(
-                                fieldError.getField(),
-                                InternalErrorCode.PARAMETER_INVALID,
-                                fieldError.getDefaultMessage()))
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidHandler(MethodArgumentNotValidException e, WebRequest request) {
+        List<Error> validationErrors = e.getFieldErrors().stream()
+                .map((fieldError) -> {
+                    return new ValidationError(
+                            fieldError.getField(),
+                            InternalErrorCode.PARAMETER_INVALID,
+                            fieldError.getDefaultMessage());
+                })
                 .collect(Collectors.toList());
 
         ValidationException validationException = new ValidationException(validationErrors);
-        validationException.setStackTrace(ex.getStackTrace());
+        validationException.setStackTrace(e.getStackTrace());
 
-        return generalExceptionHandler(validationException, request);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ErrorResponse errorResponse = buildErrorResponse(validationException, status, request);
+
+        logError(errorResponse);
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
