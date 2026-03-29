@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Audited
-@Entity(name = "user")
+@Entity(name = "app_user")
 public class User extends BaseEntity {
     @Column(name = "first_name", nullable = false)
     private String firstName;
