@@ -142,8 +142,9 @@ new project, such as the GroupId and the ArtifactId.
 
 Below a list of all released archetype versions:
 
-- 1.0
-  - 1.0.1
-  - 1.0.2
-  - 1.0.3
-  - 1.0.4
+- [1.0](https://github.com/mfacecchia/archetype/releases/tag/v1.0)
+  - [1.0.1](https://github.com/mfacecchia/archetype/releases/tag/v1.0.1)
+  - [1.0.2](https://github.com/mfacecchia/archetype/releases/tag/v1.0.2)
+  - [1.0.3](https://github.com/mfacecchia/archetype/releases/tag/v1.0.3)
+  - [1.0.4](https://github.com/mfacecchia/archetype/releases/tag/v1.0.4)
+  - [1.0.5](https://github.com/mfacecchia/archetype/releases/tag/v1.0.5)
