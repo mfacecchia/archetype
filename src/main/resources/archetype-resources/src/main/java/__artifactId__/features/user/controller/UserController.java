@@ -2,7 +2,9 @@ package ${package}.${artifactId}.features.user.controller;
 
 import ${package}.${artifactId}.common.data.dto.response.SuccessResponse;
 import ${package}.${artifactId}.common.exception.data.dto.response.ErrorResponse;
+import ${package}.${artifactId}.common.specification.CommonSpecificationBuilder;
 import ${package}.${artifactId}.common.specification.PageableUtil;
+import ${package}.${artifactId}.features.user.data.User;
 import ${package}.${artifactId}.features.user.data.dto.request.UserCreateDto;
 import ${package}.${artifactId}.features.user.data.dto.request.UserUpdateDto;
 import ${package}.${artifactId}.features.user.data.dto.response.UserDto;
@@ -70,9 +72,9 @@ public class UserController {
             @RequestParam(value = "sortDirection", required = false, defaultValue = "ASC") String sortDirection,
             @RequestParam(value = "showTotalCount", required = false, defaultValue = "false") Boolean showTotalCount) {
 
-        UserSpecificationBuilder specificationBuilder = new UserSpecificationBuilder();
         Pageable pageable = PageableUtil.buildPageable(page, pageSize, sortBy, sortDirection);
-        specificationBuilder
+
+        CommonSpecificationBuilder<User> specificationBuilder = new UserSpecificationBuilder()
                 .like(UserField.FIRST_NAME.getPath(), firstName, false)
                 .like(UserField.MIDDLE_NAME.getPath(), middleName, false)
                 .like(UserField.LAST_NAME.getPath(), lastName, false)
