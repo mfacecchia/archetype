@@ -61,14 +61,14 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> dataIntegrityViolationHandler(DataIntegrityViolationException ex, WebRequest request) {
-        ConstraintViolationException constraintViolationException = (ConstraintViolationException) ex.getCause();
+    public ResponseEntity<ErrorResponse> dataIntegrityViolationHandler(DataIntegrityViolationException e, WebRequest request) {
+        ConstraintViolationException constraintViolationException = (ConstraintViolationException) e.getCause();
 
         Error error = new Error(InternalErrorCode.CONFLICT, constraintViolationException.getSQLException().getMessage(),
                 constraintViolationException.getSQL());
         BaseException baseException = new BaseException();
         baseException.addError(error);
-        baseException.setStackTrace(ex.getStackTrace());
+        baseException.setStackTrace(e.getStackTrace());
 
         ErrorResponse errorResponse = buildErrorResponse(baseException, HttpStatus.CONFLICT, request);
 
@@ -78,14 +78,14 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<ErrorResponse> authorizationDeniedHandler(AuthorizationDeniedException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> authorizationDeniedHandler(AuthorizationDeniedException e, WebRequest request) {
         InternalErrorCode internalErrorCode = InternalErrorCode.FORBIDDEN;
 
-        Error error = new Error(internalErrorCode, internalErrorCode.getMessage(), ex.getMessage());
+        Error error = new Error(internalErrorCode, internalErrorCode.getMessage(), e.getMessage());
 
         BaseException baseException = new BaseException();
         baseException.addError(error);
-        baseException.setStackTrace(ex.getStackTrace());
+        baseException.setStackTrace(e.getStackTrace());
 
         ErrorResponse errorResponse = buildErrorResponse(baseException, HttpStatus.FORBIDDEN, request);
 
@@ -95,10 +95,10 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler({ BaseException.class })
-    public ResponseEntity<ErrorResponse> baseExceptionHandler(BaseException ex, WebRequest request) {
-        HttpStatus status = getExceptionStatusCode(ex);
+    public ResponseEntity<ErrorResponse> baseExceptionHandler(BaseException e, WebRequest request) {
+        HttpStatus status = getExceptionStatusCode(e);
 
-        ErrorResponse errorResponse = buildErrorResponse(ex, status, request);
+        ErrorResponse errorResponse = buildErrorResponse(e, status, request);
 
         logError(errorResponse);
 
@@ -165,11 +165,12 @@ public class GeneralExceptionHandler {
                 .toString();
     }
 
-    private HttpStatus getExceptionStatusCode(Exception ex) {
-        Class<? extends Exception> exceptionClass = ex.getClass();
+    private HttpStatus getExceptionStatusCode(Exception e) {
+        Class<? extends Exception> exceptionClass = e.getClass();
         ResponseStatus responseStatus = exceptionClass.getAnnotation(ResponseStatus.class);
-        final HttpStatus status = responseStatus != null ? responseStatus.code() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        return status;
+        return responseStatus != null ?
+                responseStatus.code()
+                : HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }
