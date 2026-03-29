@@ -17,18 +17,18 @@ import lombok.Setter;
 @Audited
 public class BaseAuditingEntity {
     @CreationTimestamp
-    @Column(name = "created_date")
-    protected Instant createdDate;
+    @Column(name = "created_at")
+    protected Instant createdAt;
 
     @Column(name = "created_by")
     protected String createdBy;
 
     @UpdateTimestamp
-    @Column(name = "modified_date")
-    private Instant modifiedDate;
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
-    @Column(name = "modified_by")
-    protected String modifiedBy;
+    @Column(name = "updated_by")
+    protected String updatedBy;
 
     @Column(name = "deleted")
     protected Boolean deleted;

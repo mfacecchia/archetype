@@ -1,14 +1,14 @@
 package ${package}.${artifactId}.features.user.mapper;
 
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
-
 import ${package}.${artifactId}.common.mapper.BaseMapper;
 import ${package}.${artifactId}.features.user.data.User;
 import ${package}.${artifactId}.features.user.data.dto.request.UserCreateDto;
 import ${package}.${artifactId}.features.user.data.dto.request.UserUpdateDto;
 import ${package}.${artifactId}.features.user.data.dto.response.UserDto;
 import ${package}.${artifactId}.features.user.data.dto.response.UserPageDto;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper implements BaseMapper<User, UserDto, UserCreateDto, UserUpdateDto, UserPageDto> {
@@ -25,10 +25,10 @@ public class UserMapper implements BaseMapper<User, UserDto, UserCreateDto, User
 
         // Auditing
         entity.setCreatedBy(dto.getCreatedBy());
-        entity.setCreatedDate(dto.getCreatedDate());
+        entity.setCreatedAt(dto.getCreatedAt());
         entity.setDeleted(dto.getDeleted());
-        entity.setModifiedBy(dto.getModifiedBy());
-        entity.setModifiedDate(dto.getModifiedDate());
+        entity.setUpdatedBy(dto.getUpdatedBy());
+        entity.setUpdatedAt(dto.getUpdatedAt());
 
         return entity;
     }
@@ -45,10 +45,10 @@ public class UserMapper implements BaseMapper<User, UserDto, UserCreateDto, User
 
         // Auditing
         dto.setCreatedBy(entity.getCreatedBy());
-        dto.setCreatedDate(entity.getCreatedDate());
+        dto.setCreatedAt(entity.getCreatedAt());
         dto.setDeleted(entity.getDeleted());
-        dto.setModifiedBy(entity.getModifiedBy());
-        dto.setModifiedDate(entity.getModifiedDate());
+        dto.setUpdatedBy(entity.getUpdatedBy());
+        dto.setUpdatedAt(entity.getUpdatedAt());
 
         return dto;
     }
