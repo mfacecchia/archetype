@@ -30,4 +30,8 @@ public class SecurityUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (JwtDto) authentication.getPrincipal();
     }
+
+    public static Integer getJwtUserId() {
+        return Integer.valueOf(getJwtDto().getUserId());
+    }
 }
