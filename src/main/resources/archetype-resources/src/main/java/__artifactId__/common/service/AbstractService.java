@@ -46,7 +46,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     protected abstract PK_TYPE getResourceId(ENTITY entity);
 
     public GET_DTO get(PK_TYPE id) {
-        ENTITY entity = repository.findById(id)
+        ENTITY entity = repository.findByIdAndDeleted(id, false)
                 .orElseThrow(() -> new ResourceNotFoundException(resourceName, id.toString()));
 
         log.info("GetById ::: {} found with id {}", resourceName, id);
@@ -112,7 +112,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
 
     @Transactional(rollbackFor = Exception.class)
     public GET_DTO update(PK_TYPE id, UPDATE_DTO updateDto) {
-        ENTITY existing = repository.findById(id).orElseThrow(
+        ENTITY existing = repository.findByIdAndDeleted(id, false).orElseThrow(
                 () -> new ResourceNotFoundException(resourceName, id.toString()));
 
         doValidate(updateDto);
@@ -136,7 +136,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     }
 
     protected void softDelete(PK_TYPE id) {
-        Optional<ENTITY> existing = repository.findById(id);
+        Optional<ENTITY> existing = repository.findByIdAndDeleted(id, false);
         if (existing.isEmpty()) {
             log.info("Delete ::: {} with id {} was not found. Early returning.", resourceName, id);
             return;
@@ -152,7 +152,7 @@ public abstract class AbstractService<ENTITY extends BaseAuditingEntity, GET_DTO
     }
 
     protected void hardDelete(PK_TYPE id) {
-        Optional<ENTITY> entity = repository.findById(id);
+        Optional<ENTITY> entity = repository.findByIdAndDeleted(id, false);
 
         if (!entity.isPresent()) {
             log.info("Delete ::: {} with id {} was not found. Early returning.", resourceName, id);
