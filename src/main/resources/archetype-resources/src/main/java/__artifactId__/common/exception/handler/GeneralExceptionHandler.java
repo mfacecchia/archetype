@@ -12,8 +12,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.StringFormattedMessage;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -28,9 +26,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @ControllerAdvice
 public class GeneralExceptionHandler {
-    private final static Logger logger = LogManager.getLogger(GeneralExceptionHandler.class);
     private static final String ERROR_MESSAGE_TEMPLATE = "%n Request uri: %s;%n Http status: %s;%n Http error: %s;%n Messages: %n %s.";
     private static final String LIST_JOIN_DELIMITER = "\n";
 
@@ -141,7 +141,7 @@ public class GeneralExceptionHandler {
     }
 
     private void logError(ErrorResponse response) {
-        logger.error(buildErrorMessageTemplate(response));
+        log.error(buildErrorMessageTemplate(response));
     }
 
     private String buildErrorMessageTemplate(ErrorResponse response) {
